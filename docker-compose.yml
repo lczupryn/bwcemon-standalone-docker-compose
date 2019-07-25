@@ -1,0 +1,25 @@
+version: "3"
+services:
+  mon_app:
+    image: "bwce-mon:2.4.4"
+    container_name: "bwcemonapp"
+    environment:
+      - PERSISTENCE_TYPE=postgres
+      - DB_URL=postgresql://tibco:Tibco123!@mon_db:5432/bwcemon
+    depends_on:
+      - mon_db
+    ports:
+      - "8080:8080"
+  mon_db:
+    image: "bitnami/postgresql:11"
+    container_name: "postgresdb"
+    environment:
+      - POSTGRESQL_USERNAME=tibco
+      - POSTGRESQL_PASSWORD=Tibco123!
+      - POSTGRESQL_DATABASE=bwcemon
+    ports:
+      - "5432:5432"
+    volumes:
+      - my_dbdata:/var/lib/postgresql/data
+volumes:
+  my_dbdata:
